@@ -10,19 +10,24 @@ export default function Quiz() {
   const [selectedAnswer, setSelectedAnswer] = useState(0);
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [searchString, setSearchString] = useState("");
+  const [personalityString, setPersonalityString] = useState("");
 
-  const handleAnswerOption = (answer, keywords) => {
+  const handleAnswerOption = (answer, keywords, description) => {
     keywords = keywords || "";
     setSelectedOptions([
-      (selectedOptions[currentQuestion] = { userResponse: answer, keywords: keywords }),
+      (selectedOptions[currentQuestion] = { userResponse: answer, keywords: keywords, description:description }),
     ]);
     setSelectedOptions([...selectedOptions]);
 
     let search = "";
+    let personality = "";
     for (let i = 0; i < selectedOptions.length; i++) {
+      console.log(selectedOptions[i])
       search += selectedOptions[i].keywords + " ";
+      personality += selectedOptions[i].description + " ";
     }
     setSearchString(search);
+    setPersonalityString(personality);
   };
 
   const handlePrevious = () => {
@@ -65,7 +70,7 @@ export default function Quiz() {
             <div
               key={index}
               className="flex items-center w-full py-2 sm:py-4 pl-3 sm:pl-5 my-2 sm:my-2 ml-0 space-x-2 border-2 cursor-pointer bg-gray-800 border-white/10 rounded-xl"
-              onClick={(e) => handleAnswerOption(answer.answer, answer.keywords)}
+              onClick={(e) => handleAnswerOption(answer.answer, answer.keywords, answer.description)}
             >
               <input
                 type="radio"
@@ -93,7 +98,7 @@ export default function Quiz() {
             <Link
               href={{
                 pathname: "/results",
-                query: searchString,
+                query: { searchString:searchString, personalityString:personalityString }
               }}
               className="w-full sm:w-[49%] py-2 sm:py-3 bg-blue-500 text-white rounded-lg text-center"
             >
