@@ -7,7 +7,12 @@ export default function Results(props) {
   const [movies, setMovies] = useState(null);
   const { searchQuery, personalityTitle, personalityDescription } =
     props.searchParams;
-  const keywords = Object.keys(props.searchParams)[0];
+  // const {keywords, description} = Object.keys(props.searchParams)[0];
+  const { searchParams } = props;
+  const { searchString, personalityString } = searchParams;
+  const keywords = searchString
+  const description = personalityString
+
   const [personalityData, setPersonalityData] = useState(null);
 
   useEffect(() => {
@@ -55,7 +60,9 @@ export default function Results(props) {
       for (let i = 0; i < filteredMovies.length; i++) {
         movieTitles += filteredMovies[i].title + " ";
       }
-      getPersonalityType(movieTitles);
+      // getPersonalityType(movieTitles);
+      setPersonalityData({ ...personalityData, title:"Lights, Camera, Personality!", summary: description });
+
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -80,7 +87,7 @@ export default function Results(props) {
         <h2 className="text-2xl md:text-4xl font-bold mb-4">
           {personalityData ? personalityData?.title : "Loading personality title"}
         </h2>
-        <p>
+        <p className="text-sm text-justify">
           {personalityData ? personalityData?.summary : "Loading personality description"}
         </p>
       </div>
